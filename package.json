@@ -1,0 +1,26 @@
+{
+  "name": "juicer",
+  "version": "1.0.0",
+  "description": "reusable/extendable graphql queries/mutations",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --config ./webpack.config.js -m development",
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development"
+  },
+  "repository": "git@github.com:haxius/apollo-juicer.git",
+  "author": "randy little",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.95.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
