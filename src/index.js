@@ -1,20 +1,16 @@
-//@flow
-import body from "./body";
-import capitalize from "./capitalize";
-import externalWrapper from "./wrapper";
-
-type Query = {
-  name: string,
-  alias: string,
-  variables: [],
-  results: []
-};
+// @flow
+import {
+  type Query,
+  capitalize,
+  body,
+  wrapper as externalWrapper
+} from "./query";
 
 export const buildQuery = (
   { name, alias, variables, results }: Query,
   wrapper: boolean = true
 ): string => {
-  let queryBody = body({
+  const queryBody = body({
     name,
     alias,
     variables,
@@ -22,7 +18,7 @@ export const buildQuery = (
     wrapper
   });
 
-  let queryWrapper = externalWrapper({ name, variables });
+  const queryWrapper = externalWrapper({ name, variables });
 
   return !wrapper ? queryBody : queryWrapper(queryBody);
 };
@@ -39,9 +35,7 @@ export const combineQueries = (queries: []): string => {
     }
   }
 
-  const combinedQueries = queries.map(query =>
-    buildQuery(query, false)
-  );
+  const combinedQueries = queries.map(query => buildQuery(query, false));
 
   const queryWrapper = externalWrapper({
     name: "combined",
