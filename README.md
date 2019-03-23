@@ -59,8 +59,14 @@ export const PRODUCT_TYPES = gql`
 ```
 
 Using Apollo it is reasonable to assume that one might consume either of these queries using the Query component:
-`<Query query={PRODUCT_TYPES}>...</Query>`
-`<Query query={PRODUCTS} variables={{ category: "1234" }}>...</Query>`
+```
+<Query query={PRODUCT_TYPES}>...</Query>
+
+or
+
+
+<Query query={PRODUCTS} variables={{ category: "1234" }}>...</Query>
+```
 
 With traditional Apollo if one wanted to a component to consume both queries one would either nest a query (ouch), or more properly
 combine the queries with a special query:
