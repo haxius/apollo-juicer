@@ -64,7 +64,6 @@ Using Apollo it is reasonable to assume that one might consume either of these q
 
 or
 
-
 <Query query={PRODUCTS} variables={{ category: "1234" }}>...</Query>
 ```
 
