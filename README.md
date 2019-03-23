@@ -16,7 +16,7 @@ Create simple reusable GraphQL queries.
 
 ## Building
 ```
-git clone git@github.com:haxius/apollo-juicer.git`
+git clone git@github.com:haxius/apollo-juicer.git
 yarn install
 yarn run build
 ```
