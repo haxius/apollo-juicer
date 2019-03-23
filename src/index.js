@@ -1,4 +1,6 @@
 // @flow
+import gql from "graphql-tag";
+
 import {
   type Query,
   capitalize,
@@ -8,8 +10,9 @@ import {
 
 export const buildQuery = (
   { name, alias, variables, results }: Query,
-  wrapper: boolean = true
-): string => {
+  wrapper: boolean = true,
+  omitGql: boolean = false
+): mixed => {
   const queryBody = body({
     name,
     alias,
@@ -19,11 +22,19 @@ export const buildQuery = (
   });
 
   const queryWrapper = externalWrapper({ name, variables });
+  const result = !wrapper ? queryBody : queryWrapper(queryBody);
 
-  return !wrapper ? queryBody : queryWrapper(queryBody);
+  return !!omitGql
+    ? result
+    : gql`
+        ${result}
+      `;
 };
 
-export const combineQueries = (queries: []): string => {
+export const combineQueries = (
+  queries: [],
+  omitGql: boolean = false
+): mixed => {
   const combinedVariables = [];
 
   for (const { alias, variables } of queries) {
@@ -35,12 +46,18 @@ export const combineQueries = (queries: []): string => {
     }
   }
 
-  const combinedQueries = queries.map(query => buildQuery(query, false));
+  const combinedQueries = queries.map(query => buildQuery(query, false, true));
 
   const queryWrapper = externalWrapper({
     name: "combined",
     variables: combinedVariables
   });
 
-  return queryWrapper(combinedQueries.join("\n"));
+  const result = queryWrapper(combinedQueries.join("\n"));
+
+  return !!omitGql
+    ? result
+    : gql`
+        ${result}
+      `;
 };

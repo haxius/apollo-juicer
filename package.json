@@ -14,6 +14,10 @@
   "repository": "git@github.com:haxius/apollo-juicer.git",
   "author": "randy little",
   "license": "MIT",
+  "peerDependencies": {
+    "graphql": "^14.1.1",
+    "graphql-tag": "^2.10.1"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -30,6 +34,8 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-prettier": "^3.0.1",
     "flow-bin": "^0.95.1",
+    "graphql": "^14.1.1",
+    "graphql-tag": "^2.10.1",
     "jest": "^23.5.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
