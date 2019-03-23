@@ -8,10 +8,14 @@ import {
   wrapper as externalWrapper
 } from "./query";
 
+type Options = {
+  wrapper?: boolean,
+  omitGql: boolean
+};
+
 export const buildQuery = (
   { name, alias, variables, results }: Query,
-  wrapper: boolean = true,
-  omitGql: boolean = false
+  { wrapper = true, omitGql = false }: Options = {}
 ): mixed => {
   const queryBody = body({
     name,
@@ -33,7 +37,7 @@ export const buildQuery = (
 
 export const combineQueries = (
   queries: [],
-  omitGql: boolean = false
+  { omitGql = false }: Options = {}
 ): mixed => {
   const combinedVariables = [];
 
@@ -46,7 +50,9 @@ export const combineQueries = (
     }
   }
 
-  const combinedQueries = queries.map(query => buildQuery(query, false, true));
+  const combinedQueries = queries.map(query =>
+    buildQuery(query, { wrapper: false, omitGql: true })
+  );
 
   const queryWrapper = externalWrapper({
     name: "combined",

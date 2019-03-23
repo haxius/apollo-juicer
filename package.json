@@ -1,6 +1,6 @@
 {
   "name": "@parhelion/apollo-juicer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "reusable/extendable graphql queries/mutations",
   "main": "index.js",
   "scripts": {

@@ -7,6 +7,8 @@ Create simple reusable GraphQL queries.
 - [Installation](#installation)
 - [Explanation](#explanation)
 - [Usage](#usage)
+- [Advanced](#advanced)
+- [Closing Thoughts](#closingthoughts)
 - [Support](#support)
 - [Contributing](#contributing)
 
@@ -34,7 +36,7 @@ yarn run lint
 Traditionally GraphQL queries and mutations dot a modern application.
 Sometimes they are organized neatly into folders and other times they can be sporatically placed.
 When changes happen to the queries from the server-side this can result in multiple locations needing updates on the client-side.
-`apollo-juicer` attempts to recitfy this by providing a common-root in which one can derive queries.
+`apollo-juicer` attempts to rectfy this by providing a common-root in which one can derive queries.
 
 Traditional example:
 ```
@@ -258,6 +260,42 @@ Wasn't that much cleaner?
 ** That is to say, one could combine them in many different areas of the app in many different ways with other query objects without ever needing to rewrite the query.
 ** In addition to that, if the GraphQL definition for `products` or `productTypes` changes, one only has to update the code in one place.
 
+## Advanced
+
+Both `buildQuery` and `combineQueries` have an extra object parameter that can be passed to request alternative formatting to the resultset.
+
+===
+
+`buildQuery(<query>[, {options}])`
+
+===
+
+`buildQuery` can be passed the following options:
+
+`wrapper: boolean = true`: When set to false, the `query (...args) {}` portion of the result is omitted. Just returning the data-set. This is used internally by `combineQueries` when building the individual datasets but can be used if needed elsewhere.
+
+`omitGql: boolean = false`: When set to true, the result will be returned as a string instead of a `graphql-tag`.
+
+===
+
+`combineQueries([<query>, <query>, ...][, {options}])`
+
+===
+
+`combineQueries` can be passed the following options:
+
+`omitGql: boolean = false`: When set to true, the result will be returned as a string instead of a `graphql-tag`.
+
+## ClosingThoughts
+
+Ultimately this is not a perfect solution and could be improved upon in a few key ways.
+
+1. `apollo-juicer` **SHOULD** be modified to parse GraphQL strings: This would allow the consumer to simply pass it a traditional GraphQL string and one would not need to objectize their queries. New users to apollo-juicer could simply import it into their project and use the combineQueries method (buildQuery would no longer be needed) right out of the box.
+2. `apollo-graphql` could officially support parameterized fragments: This would eliminate the need for this project to exist at all and it could be deprecated.
+
+I, the author, think that this is an imperfect and temporary solution. There are probably other (and perhaps better) solutions out there.
+
+Please do not hesitate to [open an issue](https://github.com/haxius/apollo-juicer/issues/new) or [open a pull request](https://github.com/haxius/apollo-juicer/compare/) if you think things could be improved.
 
 ## Support
 

@@ -26,7 +26,7 @@ const productTypes = {
 
 describe("buildQuery", () => {
   it("should return a properly formatted GraphQL query", () => {
-    const result = buildQuery(productCategories, undefined, true);
+    const result = buildQuery(productCategories, { omitGql: true });
     const expected =
       "query productCategories($parent: ID!) {\n" +
       "  productCategories(parent: $parent) {\n" +
@@ -44,7 +44,9 @@ describe("buildQuery", () => {
 
 describe("combineQueries", () => {
   it("should return a properly formatted GraphQL query", () => {
-    const result = combineQueries([productCategories, productTypes], true);
+    const result = combineQueries([productCategories, productTypes], {
+      omitGql: true
+    });
     const expected =
       "query combined($categoryParent: ID!, $typeParent: ID!) {\n" +
       "productCategories(parent: $categoryParent) {\n" +
