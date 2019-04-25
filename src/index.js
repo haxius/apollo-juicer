@@ -14,18 +14,19 @@ type Options = {
 };
 
 export const buildQuery = (
-  { name, alias, variables, results }: Query,
+  { name, alias, variables = [], fragments = [], results }: Query,
   { wrapper = true, omitGql = false }: Options = {}
 ): mixed => {
   const queryBody = body({
     name,
     alias,
     variables,
+    fragments,
     results,
     wrapper
   });
 
-  const queryWrapper = externalWrapper({ name, variables });
+  const queryWrapper = externalWrapper({ name, variables, fragments });
   const result = !wrapper ? queryBody : queryWrapper(queryBody);
 
   return !!omitGql
@@ -40,8 +41,9 @@ export const combineQueries = (
   { omitGql = false }: Options = {}
 ): mixed => {
   const combinedVariables = [];
+  let combinedFragments = [];
 
-  for (const { alias, variables } of queries) {
+  for (const { alias, variables = [] } of queries) {
     for (const { name, type } of variables) {
       combinedVariables.push({
         name: `${alias}${capitalize(name)}`,
@@ -50,13 +52,18 @@ export const combineQueries = (
     }
   }
 
+  for(const { fragments = [] } of queries) {
+    combinedFragments = fragments.concat(combinedFragments);
+  }
+
   const combinedQueries = queries.map(query =>
     buildQuery(query, { wrapper: false, omitGql: true })
   );
 
   const queryWrapper = externalWrapper({
     name: "combined",
-    variables: combinedVariables
+    variables: combinedVariables,
+    fragments: combinedFragments
   });
 
   const result = queryWrapper(combinedQueries.join("\n"));

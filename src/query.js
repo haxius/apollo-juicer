@@ -4,6 +4,7 @@ export type Query = {
   alias?: string,
   variables: [],
   results?: [],
+  fragments?: string[],
   wrapper?: boolean
 };
 
@@ -45,14 +46,23 @@ export const body = ({
   const indent = !wrapper ? "" : "  ";
   const queryResults = results(suppliedResults, `  ${indent}`);
 
-  return `${indent}${name}(${appliedVariables}) {\n${queryResults}\n${indent}}`;
+  return appliedVariables.length
+    ? `${indent}${name}(${appliedVariables}) {\n${queryResults}\n${indent}}`
+    : `${indent}${name} {\n${queryResults}\n${indent}}`;
 };
 
-export const wrapper = ({ name = "", variables: suppliedVariables }: Query) => {
+export const wrapper = ({
+  name = "",
+  variables: suppliedVariables,
+  fragments: suppliedFragments
+}: Query) => {
   const queryVariables = args(suppliedVariables);
+  const queryFragments = fragments(suppliedFragments);
 
   return (contents: string) =>
-    `query ${name}(${queryVariables}) {\n${contents}\n}`;
+    queryVariables.length
+      ? `query ${name}(${queryVariables}) {\n${contents}\n}${queryFragments}`
+      : `query ${name} {\n${contents}\n}${queryFragments}`;
 };
 
 export const result = (
@@ -77,6 +87,16 @@ export const results = (items: [], indent: string): string => {
   const results = [];
 
   for (const item of items) results.push(result(item, indent));
+
+  return results.join("\n");
+};
+
+export const fragment = (item: string): string => `${item}`;
+
+export const fragments = (items: string[] = []): string => {
+  const results = [];
+
+  for (const item of items) results.push(fragment(item));
 
   return results.join("\n");
 };
